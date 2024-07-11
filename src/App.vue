@@ -1,32 +1,48 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ClassModal from './components/ClassModal.vue'
 import { classModalId } from './constants'
 import { ClassModalType } from './types'
+import { Modal } from 'bootstrap'
 
-let classModalInitType = ref<ClassModalType.CREATE_CLASS | ClassModalType.SELECT_CLASS | null>(null)
+let firstClassModalType = ref<ClassModalType.CREATE_CLASS | ClassModalType.SELECT_CLASS | null>(null)
+function initFirstClassModalType() {
+  firstClassModalType.value = null
+}
+
+const modal = ref<Modal | null>(null)
+onMounted(() => {
+  modal.value = new Modal(`#${classModalId}`)
+})
+
+function closeModal() {
+  modal.value?.hide()
+}
+function openModal() {
+  modal.value?.show()
+}
 </script>
 
 <template>
   <button
     type="button"
-    @click="classModalInitType = ClassModalType.CREATE_CLASS"
+    @click="(firstClassModalType = ClassModalType.CREATE_CLASS), openModal()"
     class="btn btn-primary"
-    data-bs-toggle="modal"
-    :data-bs-target="`#${classModalId}`"
   >
     create class
   </button>
   <button
     type="button"
-    @click="classModalInitType = ClassModalType.SELECT_CLASS"
+    @click="(firstClassModalType = ClassModalType.SELECT_CLASS), openModal()"
     class="btn btn-primary"
-    data-bs-toggle="modal"
-    :data-bs-target="`#${classModalId}`"
   >
     select class
   </button>
-  <ClassModal :init-page="classModalInitType"></ClassModal>
+  <ClassModal
+    :first-page="firstClassModalType"
+    @init-first-page="initFirstClassModalType"
+    :close-modal-func="closeModal"
+  ></ClassModal>
 </template>
 
 <style>

@@ -3,7 +3,7 @@ import { ClassModalType, type RollBook, type Student } from '@/types'
 import ClassModalContent from './ClassModalContent.vue'
 import ClassModalHeader from './ClassModalHeader.vue'
 import UpsertClassModalBody from './UpsertClassModalBody.vue'
-import { computed, inject, ref, unref, type ComputedRef } from 'vue'
+import { computed, inject, onActivated, ref, unref, type ComputedRef } from 'vue'
 import { useStudent } from '@/composables'
 
 const { className, fieldOptions, students, studentIdSet, delay, isDataValid, deleteIdAndSex } = useStudent()
@@ -22,24 +22,29 @@ async function save() {
       fieldOptions: unref(fieldOptions),
       students: unref(students),
     }
-    if (isFirstPage?.value) {
-      selectedRollBook.value = rollBook
-    } else {
-      newRollBook.value = rollBook
-    }
+    updatedRollBook.value = rollBook
     movePrevPage()
     deleteIdAndSex()
 
     return
   }
-  alert('cannot create class..')
+  alert('cannot update class..')
 }
+
+onActivated(() => {
+  if (updatedRollBook.value) {
+    const urb = unref(updatedRollBook) as RollBook
+    className.value = urb.className
+    fieldOptions.value = urb.fieldOptions
+    students.value = urb.students
+  }
+})
 </script>
 
 <template>
   <ClassModalContent>
     <template #modal-header>
-      <ClassModalHeader :class-modal-type="ClassModalType.CREATE_CLASS" @save-changes="save"></ClassModalHeader>
+      <ClassModalHeader :class-modal-type="ClassModalType.UPDATE_CLASS" @save-changes="save"></ClassModalHeader>
     </template>
     <template #modal-body>
       <UpsertClassModalBody

@@ -3,3 +3,4 @@ export * from './enums/classModalType'
 
 export * from './interfaces/student'
 export * from './interfaces/studentFieldOptions'
+export * from './interfaces/rollBook'

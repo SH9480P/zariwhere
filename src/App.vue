@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import ClassModal from './components/ClassModal.vue'
 import { classModalId } from './constants'
-import { ClassModalType } from './types'
+import { ClassModalType, type RollBook } from './types'
 import { Modal } from 'bootstrap'
 
 let firstClassModalType = ref<ClassModalType.CREATE_CLASS | ClassModalType.SELECT_CLASS | null>(null)
@@ -21,6 +21,8 @@ function closeModal() {
 function openModal() {
   modal.value?.show()
 }
+
+const rollBook = ref<RollBook | null>(null)
 </script>
 
 <template>
@@ -42,7 +44,11 @@ function openModal() {
     :first-page="firstClassModalType"
     @init-first-page="initFirstClassModalType"
     :close-modal-func="closeModal"
+    v-model:roll-book="rollBook"
   ></ClassModal>
+  <div>
+    {{ rollBook }}
+  </div>
 </template>
 
 <style>

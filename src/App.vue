@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import ClassModal from './components/ClassModal.vue'
 import { classModalId } from './constants'
 import { ClassModalType, type RollBook } from './types'
 import { Modal } from 'bootstrap'
+import GridTest from './components/GridTest.vue'
 
 let firstClassModalType = ref<ClassModalType.CREATE_CLASS | ClassModalType.SELECT_CLASS | null>(null)
 function initFirstClassModalType() {
@@ -49,9 +50,12 @@ const rollBook = ref<RollBook | null>(null)
   <div>
     {{ rollBook }}
   </div>
+  <div style="width: 1046px; height: 786px" class="bg-secondary-subtle">
+    <GridTest></GridTest>
+  </div>
 </template>
 
-<style>
+<style scoped>
 body {
   margin: 0;
 }
